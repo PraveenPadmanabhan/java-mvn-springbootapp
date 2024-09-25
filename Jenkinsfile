@@ -1,6 +1,6 @@
 pipeline {
 
-    agent { label 'pwcslave1' }
+    agent { label 'agent1' }
 
 	environment {	
 		DOCKERHUB_CREDENTIALS=credentials('dockerloginid')
@@ -10,7 +10,7 @@ pipeline {
         stage('SCM_Checkout') {
             steps {
                 echo 'Perform SCM Checkout'
-				git 'https://github.com/Edu-TCS-DevOps-Aug21/java-mvn-springbootapp.git'
+				git 'https://github.com/PraveenPadmanabhan/java-mvn-springbootapp.git'
             }
         }
         stage('Application_Build') {
@@ -22,9 +22,9 @@ pipeline {
         stage('Build Docker Image') {
             steps {
 				sh 'docker version'
-				sh "docker build -t loksaieta/loksai-eta-app:${BUILD_NUMBER} ."
+				sh "docker build -t devopstraining/sample-web-app:${BUILD_NUMBER} ."
 				sh 'docker image list'
-				sh "docker tag loksaieta/loksai-eta-app:${BUILD_NUMBER} loksaieta/loksai-eta-app:latest"
+				sh "docker tag devopstraining/sample-web-app:${BUILD_NUMBER} loksaieta/loksai-eta-app:latest"
             }
         }
 
@@ -36,7 +36,7 @@ pipeline {
 		}
 		stage('Publish_to_Docker_Registry') {
 			steps {
-				sh "docker push loksaieta/loksai-eta-app:latest"
+				sh "docker push devopstraining/sample-web-app:latest"
 			}
 		}
 		stage('Deploy to Kubernetes') {
